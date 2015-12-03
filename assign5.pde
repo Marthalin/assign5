@@ -346,7 +346,7 @@ boolean isHit(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh){
 int closestEnemy(int fighterXCurrent, int fighterYCurrent){
   float enemyDistance = 1000;
   if(enemyX[7] > width || enemyX[5] == -1 && enemyX[4] > width){
-    closeEnemy = -1;
+    closestEnemy = -1;
   }else{
     for(int i=0; i<8; i++){
       if(enemyX[i] != -1){
