@@ -398,7 +398,7 @@ void keyReleased(){
         break;
     } 
   } 
-      if(key == ' '){
+      if(key == ENTER){
     shootBullet = true;
     for(int shootNum=0;shootNum<5;shootNum++){
     shootX[shootNum] = fighterX;
