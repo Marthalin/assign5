@@ -29,9 +29,10 @@ int flameY = 700;
 
 int []shootX = new int [5];
 int []shootY = new int [5];
+float []shoots = new float[5];
 PImage shoot;
 int shootNum;
-boolean [] shootLimit = new boolean[5];
+boolean shootBullet = false;
 
 int score=0;
 PFont scoreFont;
@@ -67,16 +68,15 @@ void setup () {
   for(int j=0; j<5; j++){
     flame[j]= loadImage("img/flame"+(j+1)+".png");
   }   
-  for(int i=0; i<shootLimit.length; i++){
-    shootLimit[i] = false;
-  }  
+  for(int i=0;i<5;i++){
+    shootBullet = false;
+  }
   type = 0;
   addEnemy(type);
 }
 
 void draw()
 {
-  println(shootNum);
   switch(gameState){
     case GAME_START:
     image(start2,0,0);
@@ -126,7 +126,7 @@ void draw()
         for (int i = 0; i < enemyCount; ++i) { 
           for (int j=0; j < 5; j++){
           if(isHit(shootX[j], shootY[j], shoot.width, shoot.height, enemyX[i], enemyY[i], enemy.width, enemy.height) == true){
-            score += 10;
+            scoreChange(20);
             drawFlame();
             flameX = enemyX[i];
             flameY = enemyY[i];
@@ -150,6 +150,7 @@ void draw()
         score = 0;
         type =0;
         addEnemy(type);
+        shootX[shootNum]=-1000;
       }else{
         image(end1,0,0);
       }
@@ -296,6 +297,9 @@ void drawScore(){
   textFont(scoreFont);
   text("Score: " + score, 10, 450);
 }
+void scoreChange(int value){
+  score += value;
+}
 void drawFlame(){
 
      image(flame[flamenum],flameX,flameY);
@@ -310,16 +314,25 @@ void drawFlame(){
        flamenum=0;
      }
 }
+
 void drawShoot(){
+  if(shootBullet==true){
+    image(shoot,shootX[shootNum],shootY[shootNum]);
+    shootX[shootNum] -= 3;
+    
       for(int i=0; i<5; i++){
-        if(shootLimit[i] == true){
-          image(shoot, shootX[i], shootY[i]);
-          shootX[i] -= 3;
+        if(enemyX[0] > 0){
+          if(closeEnemy != -1 && enemyX[closeEnemy] < shootX[i]){
+            if(enemyY[closeEnemy] > shootY[i]){
+              shootY[i] += 3;
+            }else if(enemyY[closeEnemy] < shootY[i]){
+              shootY[i] -= 3;
+            }
+          }
         }
-        if(shootX[i] < -shoot.width){
-          shootLimit[i] = false;
-        }
-      }
+      }       
+  }
+  
 }
 
 boolean isHit(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh){
@@ -329,7 +342,7 @@ boolean isHit(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh){
     return false;
   }
 }
-/*
+
 int closeEnemy(int fighterXCurrent, int fighterYCurrent){
   float enemyDistance = 1000;
   if(enemyX[7] > width || enemyX[5] == -1 && enemyX[4] > width){
@@ -346,7 +359,7 @@ int closeEnemy(int fighterXCurrent, int fighterYCurrent){
   }
   return closeEnemy;
 }
-*/
+
 
 void keyPressed(){
   if (key == CODED) { 
@@ -383,20 +396,16 @@ void keyReleased(){
       case RIGHT:
         rightPressed = false;
         break;
-    }
-    
-    if (keyCode == ' '){
-      if(gameState == 1){
-        if(shootLimit[shootNum] == false ) {
-          shootLimit[shootNum] = true;
-          shootX[shootNum] = fighterX - 10;
-          shootY[shootNum] = fighterY + fighter.height/2;
-          shootNum++;
-        }   
-        if(shootNum > 4) {
-          shootNum = 0;
-        }
-      }
-   }   
+    } 
   } 
+      if(keyCode == ' '){
+    shootBullet = true;
+    for(int shootNum=0;shootNum<5;shootNum++){
+    shootX[shootNum] = fighterX;
+    shootY[shootNum] = fighterY + fighter.height/2;
+    }
+    if(shootNum>4){
+      shootNum = 0;
+    }
+  }
 }
