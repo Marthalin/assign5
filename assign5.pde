@@ -40,7 +40,7 @@ PFont scoreFont;
 int closestEnemy;
 
 void setup () {
-	size(640, 480) ;
+  size(640, 480) ;
   bg1 = loadImage("img/bg1.png");
   bg2 = loadImage("img/bg2.png");
   enemy = loadImage("img/enemy.png");
@@ -183,72 +183,72 @@ void drawEnemy(){
 // 0 - straight, 1-slope, 2-dimond
 void addEnemy(int type)
 {
-	for (int i = 0; i < enemyCount; ++i) {
-		enemyX[i] = -1;
-		enemyY[i] = -1;
-	}
-	switch (type) {
-		case 0:
-			addStraightEnemy();
-			break;
-		case 1:
-			addSlopeEnemy();
-			break;
-		case 2:
-			addDiamondEnemy();
-			break;
-	}
+  for (int i = 0; i < enemyCount; ++i) {
+    enemyX[i] = -1;
+    enemyY[i] = -1;
+  }
+  switch (type) {
+    case 0:
+      addStraightEnemy();
+      break;
+    case 1:
+      addSlopeEnemy();
+      break;
+    case 2:
+      addDiamondEnemy();
+      break;
+  }
 }
 
 void addStraightEnemy()
 {
-	float t = random(height - enemy.height);
-	int h = int(t);
-	for (int i = 0; i < 5; ++i) {
+  float t = random(height - enemy.height);
+  int h = int(t);
+  for (int i = 0; i < 5; ++i) {
 
-		enemyX[i] = (i+1)*-80;
-		enemyY[i] = h;
-	}
+    enemyX[i] = (i+1)*-80;
+    enemyY[i] = h;
+  }
 }
 void addSlopeEnemy()
 {
-	float t = random(height - enemy.height * 5);
-	int h = int(t);
-	for (int i = 0; i < 5; ++i) {
+  float t = random(height - enemy.height * 5);
+  int h = int(t);
+  for (int i = 0; i < 5; ++i) {
 
-		enemyX[i] = (i+1)*-80;
-		enemyY[i] = h + i * 40;
-	}
+    enemyX[i] = (i+1)*-80;
+    enemyY[i] = h + i * 40;
+  }
 }
 void addDiamondEnemy()
 {
-	float t = random( enemy.height * 3 ,height - enemy.height * 3);
-	int h = int(t);
-	int x_axis = 1;
-	for (int i = 0; i < 8; ++i) {
-		if (i == 0 || i == 7) {
-			enemyX[i] = x_axis*-80;
-			enemyY[i] = h;
-			x_axis++;
-		}
-		else if (i == 1 || i == 5){
-			enemyX[i] = x_axis*-80;
-			enemyY[i] = h + 1 * 40;
-			enemyX[i+1] = x_axis*-80;
-			enemyY[i+1] = h - 1 * 40;
-			i++;
-			x_axis++;
-			
-		}
-		else {
-			enemyX[i] = x_axis*-80;
-			enemyY[i] = h + 2 * 40;
-			enemyX[i+1] = x_axis*-80;
-			enemyY[i+1] = h - 2 * 40;
-			i++;
-			x_axis++;
-		}
-	}
+  float t = random( enemy.height * 3 ,height - enemy.height * 3);
+  int h = int(t);
+  int x_axis = 1;
+  for (int i = 0; i < 8; ++i) {
+    if (i == 0 || i == 7) {
+      enemyX[i] = x_axis*-80;
+      enemyY[i] = h;
+      x_axis++;
+    }
+    else if (i == 1 || i == 5){
+      enemyX[i] = x_axis*-80;
+      enemyY[i] = h + 1 * 40;
+      enemyX[i+1] = x_axis*-80;
+      enemyY[i+1] = h - 1 * 40;
+      i++;
+      x_axis++;
+      
+    }
+    else {
+      enemyX[i] = x_axis*-80;
+      enemyY[i] = h + 2 * 40;
+      enemyX[i+1] = x_axis*-80;
+      enemyY[i+1] = h - 2 * 40;
+      i++;
+      x_axis++;
+    }
+  }
 }
 void bg(){
     image(bg1,bgX,0);
@@ -316,10 +316,15 @@ void drawFlame(){
 }
 
 void drawShoot(){
+  for(int j=0;j<5;j++){
   if(shootBullet==true){
-    image(shoot,shootX[shootNum],shootY[shootNum]);
-    shootX[shootNum] -= 3;
-    
+    image(shoot,shootX[j],shootY[j]);
+    shootX[j] -= 3;
+    if(shootX[j] < -shoot.width){
+          shootBullet = false;
+        }
+  }
+  
       for(int i=0; i<5; i++){
         if(enemyX[0] > 0){
           if(closestEnemy != -1 && enemyX[closestEnemy] < shootX[i]){
