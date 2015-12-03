@@ -36,6 +36,8 @@ boolean [] shootLimit = new boolean[5];
 int score;
 PFont scoreFont;
 
+int closeEnemy;
+
 void setup () {
 	size(640, 480) ;
   bg1 = loadImage("img/bg1.png");
@@ -87,11 +89,11 @@ void draw()
     
     case GAME_RUN:*/
     bg();
-    fighter();
-    blood();
+    drawFighter();
+    drawBlood();
     drawEnemy();
-    shoot();
-    score();
+    drawShoot();
+    drawScore();
     
     //treasure detection
     image(treasure,treasureX,treasureY);
@@ -108,7 +110,7 @@ void draw()
     for (int i = 0; i < enemyCount; ++i) { 
           if(isHit(fighterX, fighterY, fighter.width, fighter.height, enemyX[i], enemyY[i], enemy.width, enemy.height) == true){
             life -= 20;
-            flame();
+            drawFlame();
             flameX = enemyX[i];
             flameY = enemyY[i];
             flamenum=0;
@@ -121,7 +123,7 @@ void draw()
           for (int j=0; j < 5; j++){
           if(isHit(shootX[j], shootY[j], shoot.width, shoot.height, enemyX[i], enemyY[i], enemy.width, enemy.height) == true){
             score += 10;
-            flame();
+            drawFlame();
             flameX = enemyX[i];
             flameY = enemyY[i];
             flamenum=0;
@@ -247,7 +249,7 @@ void bg(){
     bgX%=(bg1.width+bg2.width);
 }
 
-void fighter(){
+void drawFighter(){
    image(fighter,fighterX,fighterY);
        if (upPressed) {
         fighterY -= speedY;
@@ -275,18 +277,18 @@ void fighter(){
         fighterY = 0;
       }
 }
-void blood(){
+void drawBlood(){
     fill(255,0,0);
     rect(30,24,blood,20);
     blood = 2*life;
     image(hp,20,20);
 }
-void score(){
+void drawScore(){
   fill(255);
   textFont(scoreFont);
   text("Score: " + score, 10, 450);
 }
-void flame(){
+void drawFlame(){
 
      image(flame[flamenum],flameX,flameY);
      timer++;
@@ -300,7 +302,7 @@ void flame(){
        flamenum=0;
      }
 }
-void shoot(){
+void drawShoot(){
       for(int i=0; i<5; i++){
         if(shootLimit[i] == true){
           image(shoot, shootX[i], shootY[i]);
@@ -319,7 +321,24 @@ boolean isHit(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh){
     return false;
   }
 }
-
+/*
+int closeEnemy(int fighterXCurrent, int fighterYCurrent){
+  float enemyDistance = 1000;
+  if(enemyX[7] > width || enemyX[5] == -1 && enemyX[4] > width){
+    closeEnemy = -1;
+  }else{
+    for(int i=0; i<8; i++){
+      if(enemyX[i] != -1){
+        if(dist(fighterXCurrent, fighterYCurrent, enemyX[i], enemyY[i]) < enemyDistance){
+          enemyDistance = dist(fighterXCurrent, fighterYCurrent, enemyX[i], enemyY[i]);
+          closeEnemy = i;
+        }
+      }
+    }
+  }
+  return closeEnemy;
+}
+*/
 
 void keyPressed(){
   if (key == CODED) { 
