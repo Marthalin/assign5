@@ -33,9 +33,10 @@ PImage shoot;
 int shootNum;
 boolean [] shootLimit = new boolean[5];
 
-int score;
+int score=0;
 PFont scoreFont;
 
+int closeEnemy;
 
 void setup () {
 	size(640, 480) ;
@@ -75,7 +76,8 @@ void setup () {
 
 void draw()
 {
- /* switch(gameState){
+  println(shootNum);
+  switch(gameState){
     case GAME_START:
     image(start2,0,0);
     if(mouseX > 205 && mouseX <455 && mouseY >380 && mouseY < 410){
@@ -86,7 +88,7 @@ void draw()
     }
     break;
     
-    case GAME_RUN:*/
+    case GAME_RUN:
     bg();
     drawFighter();
     drawBlood();
@@ -115,6 +117,9 @@ void draw()
             flamenum=0;
             enemyX[i] = 700;
           }
+         if(life<=0){
+           gameState = GAME_OVER;
+         }
     }    
     
     //shoot detection
@@ -128,11 +133,13 @@ void draw()
             flamenum=0;
             enemyX[i] = 700;
             shootX[j] = 1000;
+            shootY[j] = 1000;
           }
        }
     }    
+    break;
 
-   /* case GAME_OVER:
+    case GAME_OVER:
     image(end2,0,0);
     if(mouseX > 200 && mouseX <440 && mouseY >300 && mouseY < 360){
       if(mousePressed){
@@ -141,12 +148,14 @@ void draw()
         fighterX = 580;
         fighterY = 240;
         score = 0;
+        type =0;
+        addEnemy(type);
       }else{
         image(end1,0,0);
       }
     break;
     }
-}*/
+}
 }
 
 void drawEnemy(){
@@ -320,7 +329,24 @@ boolean isHit(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh){
     return false;
   }
 }
-
+/*
+int closeEnemy(int fighterXCurrent, int fighterYCurrent){
+  float enemyDistance = 1000;
+  if(enemyX[7] > width || enemyX[5] == -1 && enemyX[4] > width){
+    closeEnemy = -1;
+  }else{
+    for(int i=0; i<8; i++){
+      if(enemyX[i] != -1){
+        if(dist(fighterXCurrent, fighterYCurrent, enemyX[i], enemyY[i]) < enemyDistance){
+          enemyDistance = dist(fighterXCurrent, fighterYCurrent, enemyX[i], enemyY[i]);
+          closeEnemy = i;
+        }
+      }
+    }
+  }
+  return closeEnemy;
+}
+*/
 
 void keyPressed(){
   if (key == CODED) { 
@@ -339,19 +365,6 @@ void keyPressed(){
         break;
     }
   }
-  if (key == ' '){
-      if(gameState ==  1){
-        if(shootLimit[shootNum] == false ) {
-          shootLimit[shootNum] = true;
-          shootX[shootNum] = fighterX - 10;
-          shootY[shootNum] = fighterY + fighter.height/2;
-          shootNum++;
-        }   
-        if(shootNum > 4) {
-          shootNum = 0;
-        }
-      }
-   }   
 }
 
 
@@ -371,5 +384,19 @@ void keyReleased(){
         rightPressed = false;
         break;
     }
+    
+    if (keyCode == ' '){
+      if(gameState == 1){
+        if(shootLimit[shootNum] == false ) {
+          shootLimit[shootNum] = true;
+          shootX[shootNum] = fighterX - 10;
+          shootY[shootNum] = fighterY + fighter.height/2;
+          shootNum++;
+        }   
+        if(shootNum > 4) {
+          shootNum = 0;
+        }
+      }
+   }   
   } 
 }
