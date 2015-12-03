@@ -398,7 +398,7 @@ void keyReleased(){
         break;
     } 
   } 
-      if(keyCode == ' '){
+      if(key == ' '){
     shootBullet = true;
     for(int shootNum=0;shootNum<5;shootNum++){
     shootX[shootNum] = fighterX;
