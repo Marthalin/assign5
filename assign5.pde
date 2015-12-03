@@ -36,7 +36,6 @@ boolean [] shootLimit = new boolean[5];
 int score;
 PFont scoreFont;
 
-int closeEnemy;
 
 void setup () {
 	size(640, 480) ;
@@ -321,24 +320,7 @@ boolean isHit(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh){
     return false;
   }
 }
-/*
-int closeEnemy(int fighterXCurrent, int fighterYCurrent){
-  float enemyDistance = 1000;
-  if(enemyX[7] > width || enemyX[5] == -1 && enemyX[4] > width){
-    closeEnemy = -1;
-  }else{
-    for(int i=0; i<8; i++){
-      if(enemyX[i] != -1){
-        if(dist(fighterXCurrent, fighterYCurrent, enemyX[i], enemyY[i]) < enemyDistance){
-          enemyDistance = dist(fighterXCurrent, fighterYCurrent, enemyX[i], enemyY[i]);
-          closeEnemy = i;
-        }
-      }
-    }
-  }
-  return closeEnemy;
-}
-*/
+
 
 void keyPressed(){
   if (key == CODED) { 
@@ -357,7 +339,7 @@ void keyPressed(){
         break;
     }
   }
-  if (key == ENTER){
+  if (key == ' '){
       if(gameState ==  1){
         if(shootLimit[shootNum] == false ) {
           shootLimit[shootNum] = true;
