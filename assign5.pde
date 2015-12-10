@@ -34,10 +34,10 @@ PImage shoot;
 int shootNum;
 boolean shootBullet = false;
 
-int score=0;
+int score;
 PFont scoreFont;
 
-int closestEnemy;
+int closeEnemy;
 
 void setup () {
   size(640, 480) ;
@@ -132,8 +132,8 @@ void draw()
             flameY = enemyY[i];
             flamenum=0;
             enemyX[i] = 700;
-            shootX[j] = 1000;
-            shootY[j] = 1000;
+            shootX[j] = -1000;
+            shootY[j] = -1000;
           }
        }
     }    
@@ -326,11 +326,12 @@ void drawShoot(){
   }
   
       for(int i=0; i<5; i++){
+        closestEnemy(shootX[i],shootY[i]);
         if(enemyX[0] > 0){
-          if(closestEnemy != -1 && enemyX[closestEnemy] < shootX[i]){
-            if(enemyY[closestEnemy] > shootY[i]){
+          if(closeEnemy != -1 && enemyX[closeEnemy] < shootX[i]){
+            if(enemyY[closeEnemy] > shootY[i]){
               shootY[i] += 3;
-            }else if(enemyY[closestEnemy] < shootY[i]){
+            }else if(enemyY[closeEnemy] < shootY[i]){
               shootY[i] -= 3;
             }
           }
@@ -351,18 +352,18 @@ boolean isHit(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh){
 int closestEnemy(int fighterXCurrent, int fighterYCurrent){
   float enemyDistance = 1000;
   if(enemyX[7] > width || enemyX[5] == -1 && enemyX[4] > width){
-    closestEnemy = -1;
+    closeEnemy = -1;
   }else{
     for(int i=0; i<8; i++){
       if(enemyX[i] != -1){
         if(dist(fighterXCurrent, fighterYCurrent, enemyX[i], enemyY[i]) < enemyDistance){
           enemyDistance = dist(fighterXCurrent, fighterYCurrent, enemyX[i], enemyY[i]);
-          closestEnemy = i;
+          closeEnemy = i;
         }
       }
     }
   }
-  return closestEnemy;
+  return closeEnemy;
 }
 
 
