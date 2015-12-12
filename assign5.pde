@@ -345,6 +345,30 @@ void drawScore(){
    textSize(32);
    text("score:"+score, 20, 450); 
 }
+void scoreChange(int value){
+    score =score+value;
+}
+
+boolean isHit(float ax,float ay,float aw,float ah,float bx,float by,float bw,float bh){
+  if (ax >= bx - aw && ax <= bx + bw && ay >= by - ah && ay <= by + bh){
+  return true;
+  }
+  return false;  
+}
+
+void bullet_number(){
+  for(int i=0;i<5;i++){
+    if(bulletlimit[i]==true){
+      image(shoot[i],bullet_x[i],bullet_y[i]);
+      bullet_x[i]=bullet_x[i]-bulletSpeed;
+    }
+    if(bullet_x[i]< -shoot[i].width){
+      bulletlimit[i]=false;
+      bullet_x[i]=-300;
+      bullet_y[i]=-300;
+    }
+  }
+}
 
 void keyPressed(){
   if(key == CODED){
@@ -392,31 +416,6 @@ void keyReleased(){
       case RIGHT:
         rightPressed = false;
         break;
-    }
-  }
-}
-void scoreChange(int value){
-    score =score+value;
-}
-
-boolean isHit(float ax,float ay,float aw,float ah,float bx,float by,float bw,float bh){
-  if (ax >= bx - aw && ax <= bx + bw && ay >= by - ah && ay <= by + bh){
-  return true;
-  }
-  return false;  
-}
-
-//bulletlimit
-void bullet_number(){
-  for(int i=0;i<5;i++){
-    if(bulletlimit[i]==true){
-      image(shoot[i],bullet_x[i],bullet_y[i]);
-      bullet_x[i]=bullet_x[i]-bulletSpeed;
-    }
-    if(bullet_x[i]< -shoot[i].width){
-      bulletlimit[i]=false;
-      bullet_x[i]=-300;
-      bullet_y[i]=-300;
     }
   }
 }
